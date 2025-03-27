@@ -1,0 +1,17 @@
+﻿@{
+	ViewData["Title"] = "Request Teacher Role";
+}
+
+<h2>Request to Become a Teacher</h2>
+
+<form asp-action="RequestTeacherRole" method="post">
+    <div class="form-group">
+        <label for="message">Message (Optional):</label>
+        <textarea id="message" name="message" class="form-control" rows="4" placeholder="Explain why you want to become a teacher..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Submit Request</button>
+</form>
+
+<div class="mt-3">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</div>

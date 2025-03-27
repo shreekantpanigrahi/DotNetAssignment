@@ -1,0 +1,27 @@
+﻿@model OnlineStudentManagementSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-success">Login</button>
+</form>
+
+<div>
+    <a asp-action="Register">Don't have an account? Register here.</a>
+</div>
+
+@if (ViewBag.ShowRegisterLink != null && ViewBag.ShowRegisterLink)
+{
+    <p class="text-danger mt-3">This email doesn't have an account. <a asp-action="Register" class="text-primary">Register here</a>.</p>
+}

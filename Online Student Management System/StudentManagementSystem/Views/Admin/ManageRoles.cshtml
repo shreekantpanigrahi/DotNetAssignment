@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Manage Roles";
+    var userId = ViewBag.UserId;
+}
+
+<h2>Manage Roles for User</h2>
+
+<form asp-action="ManageRoles" method="post">
+    <input type="hidden" name="userId" value="@userId" />
+    <div class="form-group">
+        <label>Select Role</label>
+        <select name="role" class="form-control">
+            @foreach (var role in Model)
+            {
+                <option value="@role.Name">@role.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Assign Role</button>
+</form>
+
+<div>
+    <a asp-action="Users">Back to Users</a>
+</div>

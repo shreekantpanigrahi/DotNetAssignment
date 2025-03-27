@@ -108,31 +108,6 @@ select * from Books;
 select * from Customers;
 select * from Orders;
 select * from OrderItems;
-
-ALTER TABLE OrderItems NOCHECK CONSTRAINT ALL;
-ALTER TABLE Orders NOCHECK CONSTRAINT ALL;
-ALTER TABLE Books NOCHECK CONSTRAINT ALL;
-ALTER TABLE Authors NOCHECK CONSTRAINT ALL;
-ALTER TABLE Customers NOCHECK CONSTRAINT ALL;
-
-TRUNCATE TABLE OrderItems;
-TRUNCATE TABLE Orders;
-TRUNCATE TABLE Books;
-TRUNCATE TABLE Authors;
-TRUNCATE TABLE Customers;
-
-ALTER TABLE OrderItems CHECK CONSTRAINT ALL;
-ALTER TABLE Orders CHECK CONSTRAINT ALL;
-ALTER TABLE Books CHECK CONSTRAINT ALL;
-ALTER TABLE Authors CHECK CONSTRAINT ALL;
-ALTER TABLE Customers CHECK CONSTRAINT ALL;
-
-DROP TABLE IF EXISTS OrderItems;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS Books;
-DROP TABLE IF EXISTS Authors;
-DROP TABLE IF EXISTS Customers;
-
 go
 
 --2. Update the price of a book titled "SQL Mastery" by increasing it by 10%.
@@ -233,20 +208,20 @@ select * from Customers
 where CustomerID=(Select CustomerID from Orders where OrderDate=(Select MIN(OrderDate) from Orders ));
 
 --2. Find the customer(s) who placed the most orders.
-SELECT CustomerID, Name 
-FROM Customers 
-WHERE CustomerID = (SELECT TOP 1 CustomerID FROM Orders GROUP BY CustomerID ORDER BY COUNT(OrderID) DESC);
+Select CustomerID, Name 
+from Customers 
+Where CustomerID = (SELECT TOP 1 CustomerID FROM Orders GROUP BY CustomerID ORDER BY COUNT(OrderID) DESC);
 
 --3. Find customers who have not placed any orders
-SELECT * FROM Customers 
-WHERE CustomerID NOT IN (SELECT DISTINCT CustomerID FROM Orders);
+Select * from Customers 
+Where CustomerID NOT IN (select DISTINCT CustomerID from Orders);
 
 
 --4. Retrieve all books cheaper than the most expensive book written by( any author based on your data)
-SELECT * FROM Books 
-WHERE Price < (SELECT MAX(Price) FROM Books);
+Select * from Books 
+Where Price < (select MAX(Price) from Books);
 
---5. List all customers whose total spending is greater than the average spending of all customers
+--5. List all customers whose total spending is greater than the average spending of all customersselect c.CustomerID, c.Name, sum(o.TotalAmount) as TotalSpendingfrom Customers cjoin Orders o ON c.CustomerID=o.CustomerIDgroup by c.CustomerID, c.Namehaving sum(o.TotalAmount)>(select avg(TotalAmount) from orders);go
 
 
 

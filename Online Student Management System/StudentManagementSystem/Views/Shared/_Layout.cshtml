@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Online Student Management System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Student Management System</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <!-- Home Tab (Visible to All) -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var userId = User.FindFirst("sub")?.Value; // Get User ID from Claims
+
+                            @if (User.IsInRole("Student"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Course" asp-action="StudentIndex">Courses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Enrollment" asp-action="StudentIndex">Enrolled Courses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Student" asp-action="Edit" asp-route-id="@userId">Edit Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Account" asp-action="RequestTeacherRole">Request Teacher</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("Teacher"))
+                            {
+                                <!-- Teacher-Specific Tabs -->
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Course" asp-action="Index">Courses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Student" asp-action="Index">Students</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollment Details</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <!-- Admin-Specific Tabs -->
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="Users">Manage Users</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="ManageCourses">Manage Courses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Student" asp-action="Index">Manage Students</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                    <!-- Right Side Navigation -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

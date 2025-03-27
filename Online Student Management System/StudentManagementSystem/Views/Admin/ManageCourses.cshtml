@@ -1,0 +1,48 @@
+﻿@model OnlineStudentManagementSystem.ViewModels.ManageCoursesViewModel
+
+@{
+    ViewData["Title"] = "Manage Courses";
+}
+
+<h2>Manage Courses</h2>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link @(Model.SelectedTab == "ViewAll" ? "active" : "")"
+           asp-action="ManageCourses" asp-controller="Admin" asp-route-tab="ViewAll">View All Courses</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.SelectedTab == "Create" ? "active" : "")"
+           asp-action="ManageCourses" asp-controller="Admin" asp-route-tab="Create">Add New Course</a>
+    </li>
+</ul>
+
+<div class="mt-3">
+    @if (Model.SelectedTab == "ViewAll")
+    {
+        @await Html.PartialAsync("_ViewAllCourses", ViewData["Courses"] as IEnumerable<OnlineStudentManagementSystem.Models.Course>)
+    }
+    else if (Model.SelectedTab == "Create")
+    {
+        @await Html.PartialAsync("_CreateCourse", new OnlineStudentManagementSystem.Models.Course())
+    }
+    else if (Model.SelectedTab == "Edit" || Model.SelectedTab == "Delete")
+    {
+        var course = ViewData["Course"] as OnlineStudentManagementSystem.Models.Course;
+        if (course != null)
+        {
+            if (Model.SelectedTab == "Edit")
+            {
+                @await Html.PartialAsync("_EditCourse", course)
+            }
+            else if (Model.SelectedTab == "Delete")
+            {
+                @await Html.PartialAsync("_DeleteCourse", course)
+            }
+        }
+        else
+        {
+            <p class="text-danger">Course not found.</p>
+        }
+    }
+</div>

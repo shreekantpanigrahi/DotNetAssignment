@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h3>Online Student Management System</h3>
+
+    <p>Manage your details and data effectively with the help of our smooth web application.</p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Course" asp-action="StudentIndex" class="btn btn-primary">Start Now</a>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Start Now</a>
+    }
+</div>
